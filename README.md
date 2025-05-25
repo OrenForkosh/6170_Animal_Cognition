@@ -1,1 +1,1 @@
-# 6170_Animal_Cognition
+# 6170 Animal Cognition Course | HUJI
