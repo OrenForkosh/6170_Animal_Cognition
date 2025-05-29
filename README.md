@@ -1,77 +1,111 @@
-# 🐭 6170 Animal Cognition Course | HUJI
-### Behavioral Dataset: Group-Housed Mice in Enriched Environments  
+# 6170 Animal Cognition | HUJI
 
 This repository contains data from a set of experiments described in the paper:  
-📄 [Forkosh et al., Nature Neuroscience (2019)](https://www.nature.com/articles/s41593-019-0516-y)
+[Forkosh et al., Nature Neuroscience (2019)](https://www.nature.com/articles/s41593-019-0516-y)
 
-In each experiment, **four adult male mice** were housed together for **four or more days** in a **shared enriched arena**. The arena included:  
-- A closed nest  
-- Two feeders  
-- Two water bottles  
-- Two ramps  
-- An open shelter  
-- An S-shaped separation wall in the center  
+In each experiment, **four adult male mice** were housed together for **four or more days** in a **shared enriched arena**. The arena included:
+
+- A closed nest
+- Two feeders
+- Two water bottles
+- Two ramps
+- An open shelter
+- An S-shaped separation wall in the center
 
 ---
 
-## 📁 File: `daily.csv`  
+The repository contains two types of data:
+
+1. Full tracking data - found under `tracks/`
+2. Behavioral data - found in `daily.csv`
+
+---
+
+## 1. Tracking Data | `tracks/`
+
+The files found under `tracks/` are compressed HDF5 files. To open them in python it is recommanded to use [mat73](https://pypi.org/project/mat73/):
+
+```python
+pip install mat73
+```
+
+Then:
+
+```python
+import mat73
+cheese = mat73.loadmat('tracks/THREE_CHAMBER-exp.exp0011.day01.cam01.mp4.obj.mat', 'r')
+```
+
+Each CheeseCube has the following fields:
+
+- **Tracking**: the tracking data including the x, y positions of each mouse. Each of the positions are listed as a matrix of size n_mice x n_time_points.
+- **ROI**: information about the mouse arena (size, ROIs, etc.)
+- **Background**: an image of the arena without the mice
+- **Hierarchy**: behavioral analysis
+- **Colors**: color information about the mice
+- **Meta**: metadata like remarks, time range, and general information
+
+---
+
+## 2. Behavioral Data | `daily.csv`
+
 This CSV file contains **daily behavioral metrics** for each mouse.
 
-### 📌 Structure  
+### Structure
+
 Each row represents **one mouse on one day** of the experiment.
 
 **Key columns:**
-| Column         | Description |
+| Column | Description |
 |----------------|-------------|
-| `Day`          | Day of the experiment (usually between 1–4) |
-| `MouseNumber`  | Unique identifier for the mouse |
-| `MouseID`      | ID of the mouse within its group (usually 1–4) — note: `MouseID` is **not** globally unique |
-| `GroupNumber`  | Group ID (use this, rather than `GroupID`) |
-| `GroupID`      | [⚠️ Deprecated] Avoid using this — `GroupNumber` is preferred |
+| `Day` | Day of the experiment (usually between 1–4) |
+| `MouseNumber` | Unique identifier for the mouse |
+| `MouseID` | ID of the mouse within its group (usually 1–4) — note: `MouseID` is **not** globally unique |
+| `GroupNumber` | Group ID (use this, rather than `GroupID`) |
+| `GroupID` | [!Deprecated] Avoid using this — `GroupNumber` is preferred |
 
 In addition to these identifiers, each row includes a rich set of **behavioral metrics**, described below.
 
----
-
-## 🧠 Behavioral Traits & Metrics
+### Behavioral Traits & Metrics
 
 The features fall into two categories:
 
-- **Pairwise Metrics**: Social interactions and comparisons with other mice  
+- **Pairwise Metrics**: Social interactions and comparisons with other mice
 - **Individual Metrics**: Exploration, movement, preferences, and spatial behavior
 
-### 🔁 Pairwise Behavioral Metrics  
+#### Pairwise Behavioral Metrics
 
-| Behavior | Description |
-|----------|-------------|
-| **Time outside** | Fraction of time the mouse is outside the nest |
-| **Visit rate outside** | How often the mouse exits the nest |
-| **Foraging correlation** | Synchrony with other mice in being outside |
-| **Contact rate & time** | Number and duration of contacts with other mice (<10 cm apart outside the nest) |
-| **Follow / Being followed** | Times one mouse follows or is followed by another after contact (aggressive or not) |
-| **Chase / Escape** | Chases another or is chased aggressively (machine-classified) |
-| **Approach / Being approached** | Initiates or receives directed approach ending in contact |
-| **Approach-escape** | Initiates contact but ends up being chased |
-| **Approach–chase difference** | Difference between number of approaches and chases |
+| Behavior                        | Description                                                                         |
+| ------------------------------- | ----------------------------------------------------------------------------------- |
+| **Time outside**                | Fraction of time the mouse is outside the nest                                      |
+| **Visit rate outside**          | How often the mouse exits the nest                                                  |
+| **Foraging correlation**        | Synchrony with other mice in being outside                                          |
+| **Contact rate & time**         | Number and duration of contacts with other mice (<10 cm apart outside the nest)     |
+| **Follow / Being followed**     | Times one mouse follows or is followed by another after contact (aggressive or not) |
+| **Chase / Escape**              | Chases another or is chased aggressively (machine-classified)                       |
+| **Approach / Being approached** | Initiates or receives directed approach ending in contact                           |
+| **Approach-escape**             | Initiates contact but ends up being chased                                          |
+| **Approach–chase difference**   | Difference between number of approaches and chases                                  |
 
-### 🔍 Individual Behavioral Metrics  
+#### Individual Behavioral Metrics
 
-| Behavior | Description |
-|----------|-------------|
-| **Exploration (ROI & grid)** | Entropy-based measure of how uniformly the mouse explores regions or grid |
-| **Predictability** | Mutual information between successive locations (6×6 grid) |
-| **Distance traveled** | Total path length outside the nest |
-| **Speed (mean / median)** | Movement speed outside the nest |
-| **Tangential / Angular velocity** | Measures of movement path curvature |
-| **Food & water zone use** | Time spent near feeders and water bottles |
-| **Feeder / Water preference** | Bias toward feeder/water location closer to nest |
-| **Elevated area / Ramps / S-wall / Shelter / Open area** | Time spent in various zones |
-| **Distance from walls / nest** | Spatial positioning in open area |
-| **Alone outside** | Time spent outside when all others are in the nest |
+| Behavior                                                 | Description                                                               |
+| -------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Exploration (ROI & grid)**                             | Entropy-based measure of how uniformly the mouse explores regions or grid |
+| **Predictability**                                       | Mutual information between successive locations (6×6 grid)                |
+| **Distance traveled**                                    | Total path length outside the nest                                        |
+| **Speed (mean / median)**                                | Movement speed outside the nest                                           |
+| **Tangential / Angular velocity**                        | Measures of movement path curvature                                       |
+| **Food & water zone use**                                | Time spent near feeders and water bottles                                 |
+| **Feeder / Water preference**                            | Bias toward feeder/water location closer to nest                          |
+| **Elevated area / Ramps / S-wall / Shelter / Open area** | Time spent in various zones                                               |
+| **Distance from walls / nest**                           | Spatial positioning in open area                                          |
+| **Alone outside**                                        | Time spent outside when all others are in the nest                        |
 
-### 📏 Notes on Units & Normalizations
+#### Notes on Units & Normalizations
 
 Each metric includes one or more **normalized versions**, e.g.:
+
 - Per hour of total time (`per 1 h`)
 - Per hour of time outside the nest
 - Per contact
