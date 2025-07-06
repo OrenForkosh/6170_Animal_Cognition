@@ -21,7 +21,7 @@ The repository contains two types of data:
 
 ---
 
-## 1. Tracking Data | `tracks/`
+## 1. Tracking Data | `tracks/*.obj.mat`
 
 The files found under `tracks/` are compressed HDF5 files. To open them in python it is recommanded to use [mat73](https://pypi.org/project/mat73/):
 
@@ -47,9 +47,9 @@ Each CheeseCube has the following fields:
 
 ---
 
-## 2. Behavioral Data | `daily.csv`
+## 2. Behavioral Data | `daily.csv` and 'tracks/daily.csv'
 
-This CSV file contains **daily behavioral metrics** for each mouse.
+These CSV files contain **daily behavioral metrics** for each mouse. In `tracks/daily.csv` there is the daily behaviors of the mice in the 'tracks/' folder, while 'daily.csv' includes data from other mice (in a much larger database).
 
 ### Structure
 
